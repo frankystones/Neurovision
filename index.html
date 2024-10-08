@@ -27,10 +27,10 @@
             <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Info (Optional)</p>
             <input name="info" id="info" type="text" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
           </div>
-          <div class="relative">
+          <!-- <div class="relative">
             <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Img Cover (Optional)</p>
             <input name="image" id="image" type="file" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
-         </div>
+         </div> -->
          <div class="relative">
            <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Video Song</p>
            <input name="file" id="file" type="file" required class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
@@ -74,7 +74,7 @@ form.addEventListener('submit', e => {
     };
   }
 
-  const url = "https://script.google.com/macros/s/AKfycbwqVWDH7qZLOlewiT1O7pvKBcFT8TDuFSy93puovw6XbwNNNLxQW_s3klnqUSXs3KfP/exec";
+  const url = "https://script.google.com/macros/s/AKfycbzq8NxR59ZqRR7ldUfjYJYlu9LjPOWXNGy5v_TMdxk5LTxBy0ugyXh4ijEgz7Z0_b_1/exec";
 
   const data = {
      file: [...new Int8Array(f.target.result)],
