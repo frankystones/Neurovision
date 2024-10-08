@@ -64,23 +64,13 @@ form.addEventListener('submit', e => {
   const fr = new FileReader();
   fr.readAsArrayBuffer(file);
   fr.onload = f => {
-  let imageData = null;
-  if (form.image.files.length > 0) {
-    const imageFile = form.image.files[0];
-    const frImage = new FileReader();
-    frImage.readAsArrayBuffer(imageFile);
-    frImage.onload = i => {
-      imageData = [...new Int8Array(i.target.result)];
-    };
-  }
+   const url = "https://script.google.com/macros/s/AKfycbzq8NxR59ZqRR7ldUfjYJYlu9LjPOWXNGy5v_TMdxk5LTxBy0ugyXh4ijEgz7Z0_b_1/exec";  
 
-  const url = "https://script.google.com/macros/s/AKfycbzq8NxR59ZqRR7ldUfjYJYlu9LjPOWXNGy5v_TMdxk5LTxBy0ugyXh4ijEgz7Z0_b_1/exec";
-
-  const data = {
+   const data = {
      file: [...new Int8Array(f.target.result)],
      twitchname: form.twitchname.value,
-     info: form.info.value,
-     image: imageData
+	 info: form.info.value
+     //image: form.image.value
    };
    const qs = new URLSearchParams({filename: form.filename.value || file.name, mimeType: file.type});
    fetch(`${url}?${qs}`, {method: "POST", body: JSON.stringify(data)})
