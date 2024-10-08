@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+ <meta charset="UTF-8">
+<body>
+<script src="https://cdn.tailwindcss.com"></script>
+<div class="bg-white relative lg:py-20">
+  <div class="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mt-0 mr-auto mb-0 ml-auto max-w-7xl xl:px-5 lg:flex-row">
+   <div class="flex flex-col items-center w-full pt-5 pr-10 pb-20 pl-10 lg:pt-20 lg:flex-row">
+     <div class="w-full bg-cover relative max-w-md lg:max-w-2xl lg:w-7/12">
+       <div class="flex flex-col items-center justify-center w-full h-full relative lg:pr-10">
+		     <img src="tappa_Neuro_vinile.svg" class="btn-"/>
+       </div>
+     </div>
+     <div class="w-full mt-20 mr-0 mb-0 ml-0 relative z-10 max-w-2xl lg:mt-0 lg:w-5/12">
+       <div class="flex flex-col items-start justify-start pt-10 pr-10 pb-10 pl-10 bg-white shadow-2xl rounded-xl relative z-10">
+         <p class="w-full text-4xl font-medium text-center leading-snug font-serif">Invia La Tua Canzone Per Il NeuroVision</p>
+         <form id="form" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
+           <div class="relative">
+             <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Twitch Nickname</p>
+            <input name="twitchname" id="twitchname" type="text" required class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+          </div>
+          <div class="relative">
+            <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Name Canzone</p>
+            <input name="filename" id="filename" type="text" required class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+          </div>
+          <div class="relative">
+            <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Info (Optional)</p>
+            <input name="info" id="info" type="text" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+          </div>
+          <div class="relative">
+            <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Img Cover (Optional)</p>
+            <input name="image" id="image" type="file" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+         </div>
+         <div class="relative">
+           <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Video Song</p>
+           <input name="file" id="file" type="file" required class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+         </div>
+         <div class="relative">
+           <button id="submit" type="submit" class="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-indigo-500 rounded-lg transition duration-200 hover:bg-indigo-600 ease">Invia</button>
+         </div>
+       </form>
+	   <div id="responseMessage" class="response-message"></div>
+     </div>
+   </div>
+  </div>
+</div>
+</div>
+<style>
+.response-message.success {
+  color: green;
+  font-weight: bold;
+}
+
+.response-message.error {
+  color: red;
+  font-weight: bold;
+}
+</style>
+<script>
+const form = document.getElementById('form');
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const file = form.file.files[0];
+  const fr = new FileReader();
+  fr.readAsArrayBuffer(file);
+  fr.onload = f => {
+  let imageData = null;
+  if (form.image.files.length > 0) {
+    const imageFile = form.image.files[0];
+    const frImage = new FileReader();
+    frImage.readAsArrayBuffer(imageFile);
+    frImage.onload = i => {
+      imageData = [...new Int8Array(i.target.result)];
+    };
+  }
+
+  const url = "https://script.google.com/macros/s/AKfycbzwiLXA0-9S_ighYjfots6janVE9jO0iYFtXXq85t3884JYorOv_nCpt1xz2Z8Vc8l4/exec";
+
+  const data = {
+     file: [...new Int8Array(f.target.result)],
+     twitchname: form.twitchname.value,
+     info: form.info.value,
+     image: imageData
+   };
+   const qs = new URLSearchParams({filename: form.filename.value || file.name, mimeType: file.type});
+   fetch(`${url}?${qs}`, {method: "POST", body: JSON.stringify(data)})
+   .then(res => res.json())
+   .then(e => {
+    const responseMessage = document.getElementById('responseMessage');
+    responseMessage.innerHTML = "La tua canzone è stata caricata con Successo!";
+    responseMessage.classList.add('success');
+	console.log(e);
+   })
+   .catch(err => {
+    const responseMessage = document.getElementById('responseMessage');
+    responseMessage.innerHTML = "C'è stato un Errore. Riprova più Tardi.";
+    responseMessage.classList.add('error');
+	console.log(err);
+   });
+  };
+});
+</script>
+</body>
+</html>
