@@ -64,7 +64,7 @@ form.addEventListener('submit', e => {
   const fr = new FileReader();
   fr.readAsArrayBuffer(file);
   fr.onload = f => {
-   const url = "https://script.google.com/macros/s/AKfycbweEllTn89aJEZRwfRcFLDguPcjjTubSJhq22UINSRQdFVXqWZvuUbuExWnW3LCzbxO/exec";  
+   const url = "https://script.google.com/macros/s/AKfycbzsFemoCx6W38NmdNU5p0mUhNUnWBCNS_OLSxo8USZwsramnimgvfGlxY3UbyEge_sb/exec";  
 
    const data = {
      file: [...new Int8Array(f.target.result)],
