@@ -74,14 +74,21 @@ form.addEventListener('submit', e => {
    };
    const qs = new URLSearchParams({filename: form.filename.value || file.name, mimeType: file.type});
    fetch(`${url}?${qs}`, {method: "POST", body: JSON.stringify(data), mode: 'no-cors'})
-   .then(res => res.json())
-   .then(e => {
-    const responseMessage = document.getElementById('responseMessage');
-    responseMessage.innerHTML = "La tua canzone è stata caricata con Successo!";
-    responseMessage.classList.add('success');
-	console.log(e);
-   })
+.then(res => {
+  if (res.ok) {
+   // The request was successful
+   const responseMessage = document.getElementById('responseMessage');
+   responseMessage.innerHTML = "La tua canzone è stata caricata con Successo!";
+   responseMessage.classList.add('success');
+  } else {
+   // The request was not successful
+   const responseMessage = document.getElementById('responseMessage');
+   responseMessage.innerHTML = "C'è stato un Errore. Riprova più Tardi.";
+   responseMessage.classList.add('error');
+  }
+})
    .catch(err => {
+     // There was a network error
     const responseMessage = document.getElementById('responseMessage');
     responseMessage.innerHTML = "C'è stato un Errore. Riprova più Tardi.";
     responseMessage.classList.add('error');
